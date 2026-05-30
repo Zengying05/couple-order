@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机访问 - 情侣点单</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        #qrcode {
+            margin: 20px auto;
+            padding: 15px;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        #qrcode img {
+            display: block;
+        }
+        .url-box {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        .url {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .url:hover {
+            text-decoration: underline;
+        }
+        .instructions {
+            color: #888;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .instructions li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .instructions strong {
+            color: #333;
+        }
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💕 手机访问</h1>
+        <p class="subtitle">扫描二维码或点击链接</p>
+
+        <div id="qrcode"></div>
+
+        <div class="url-box">
+            <a id="url" class="url" href="#" target="_blank"></a>
+        </div>
+
+        <button class="refresh-btn" onclick="getLocation()">🔄 刷新地址</button>
+
+        <ol class="instructions">
+            <li><strong>确保</strong>手机和电脑连接同一个 WiFi</li>
+            <li><strong>扫描</strong>上方二维码 或 <strong>点击</strong>链接</li>
+            <li>开始使用情侣点单系统 💕</li>
+        </ol>
+    </div>
+
+    <script>
+        function getLocation() {
+            const urlBox = document.getElementById('url');
+            const currentUrl = window.location.origin;
+            urlBox.href = currentUrl;
+            urlBox.textContent = currentUrl;
+
+            // 生成二维码
+            const qrcodeDiv = document.getElementById('qrcode');
+            qrcodeDiv.innerHTML = '';
+            QRCode.toCanvas(document.createElement('canvas'), currentUrl, {
+                width: 200,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
+                }
+            }, function (error, canvas) {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                qrcodeDiv.appendChild(canvas);
+            });
+        }
+
+        getLocation();
+    </script>
+</body>
+</html>
